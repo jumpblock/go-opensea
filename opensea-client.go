@@ -104,7 +104,7 @@ func (o Opensea) getURL(ctx context.Context, url string) ([]byte, error) {
 		e := new(errorResponse)
 		err = json.Unmarshal(body, e)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("Backend returns status %d msg: %s", resp.StatusCode, string(body))
 		}
 		if !e.Success {
 			return nil, e

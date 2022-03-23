@@ -305,3 +305,9 @@ type CollectionSingle struct {
 	Traits                interface{}    `json:"traits" bson:"traits"`
 	Collection
 }
+
+type assetsResp struct {
+	Next     string  `json:"next" bson:"next"`
+	Previous string  `json:"previous" bson:"previous"`
+	Assets   []Asset `json:"assets" bson:"assets"`
+}

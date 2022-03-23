@@ -79,6 +79,24 @@ func (o Opensea) GetSingleAssetWithContext(ctx context.Context, assetContractAdd
 	ret := new(Asset)
 	return ret, json.Unmarshal(b, ret)
 }
+func (o Opensea) GetAssetDetail(assetContractAddress string) (*Asset, error) {
+	ctx := context.TODO()
+	path := fmt.Sprintf("/api/v1/assets?asset_contract_address=%s&limit=1", assetContractAddress)
+	b, err := o.GetPath(ctx, path)
+	if err != nil {
+		return nil, err
+	}
+	var res assetsResp
+	err = json.Unmarshal(b, &res)
+	if err != nil {
+		return nil, err
+	}
+	if res.Assets != nil && len(res.Assets) > 0 {
+		return &res.Assets[0], nil
+	} else {
+		return nil, fmt.Errorf("no asset return")
+	}
+}
 
 func (o Opensea) GetPath(ctx context.Context, path string) ([]byte, error) {
 	return o.getURL(ctx, o.API+path)

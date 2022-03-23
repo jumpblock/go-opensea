@@ -26,6 +26,13 @@ func TestGetSingleAsset(t *testing.T) {
 
 	print(*ret)
 }
+func TestGetAssets(t *testing.T) {
+	is := initializeTest(t)
+	ret, err := o.GetAssetDetail("0xfacb4bc7bfa5007d91095564e05918c82079befb")
+	is.Nil(err)
+
+	print(ret.Collection.Slug)
+}
 
 func initializeTest(t *testing.T) is.I {
 	is := is.New(t)

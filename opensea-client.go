@@ -23,7 +23,8 @@ type Opensea struct {
 }
 
 type errorResponse struct {
-	Success bool `json:"success" bson:"success"`
+	Success bool   `json:"success" bson:"success"`
+	Msg     string `json:"msg" bson:"msg"`
 }
 
 func (e errorResponse) Error() string {
@@ -125,6 +126,7 @@ func (o Opensea) getURL(ctx context.Context, url string) ([]byte, error) {
 			return nil, fmt.Errorf("Backend returns status %d msg: %s", resp.StatusCode, string(body))
 		}
 		if !e.Success {
+			e.Msg = resp.Status
 			return nil, e
 		}
 

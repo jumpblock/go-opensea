@@ -40,6 +40,9 @@ func IsHexAddress(s string) bool {
 }
 
 func ParseAddress(address string) (Address, error) {
+	if address == "" {
+		return NullAddress, nil
+	}
 	if !IsHexAddress(address) {
 		return "", errors.New("Invalid address: " + address)
 	}

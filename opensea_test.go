@@ -12,10 +12,10 @@ import (
 )
 
 var (
-	o        = &Opensea{}
-	owner    = "0xd868711BD9a2C6F1548F5f4737f71DA67d821090"
-	contract = "0xdceaf1652a131f32a821468dc03a92df0edd86ea"
-	tokenID  = big.NewInt(50010001)
+	o          = &Opensea{}
+	owner      = "0xd868711BD9a2C6F1548F5f4737f71DA67d821090"
+	contract   = "0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe"
+	tokenID, _ = new(big.Int).SetString("68193319175094895046676294033579301732477745586436552446948983324346430262893", 0)
 )
 
 func TestGetSingleAsset(t *testing.T) {

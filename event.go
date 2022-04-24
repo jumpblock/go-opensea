@@ -9,6 +9,8 @@ import (
 )
 
 type AssetEventsResponse struct {
+	Next        string  `json:"next" bson:"next"`
+	Previous    string  `json:"next" bson:"next"`
 	AssetEvents []Event `json:"asset_events" bson:"asset_events"`
 }
 
@@ -131,7 +133,8 @@ type RetrievingEventsParams struct {
 	EventType            EventType
 	OnlyOpensea          bool
 	AuctionType          AuctionType
-	Offset               int
+	CollectionSlug       string
+	Cursor               string
 	Limit                int
 	OccurredBefore       int64
 	OccurredAfter        int64
@@ -145,7 +148,7 @@ func NewRetrievingEventsParams() *RetrievingEventsParams {
 		EventType:            EventTypeNone,
 		OnlyOpensea:          true,
 		AuctionType:          AuctionTypeNone,
-		Offset:               0,
+		Cursor:               "",
 		Limit:                100,
 		OccurredBefore:       time.Now().Unix(),
 		OccurredAfter:        time.Now().Unix() - 3600,
@@ -171,6 +174,9 @@ func (p RetrievingEventsParams) Encode() string {
 	if p.TokenID != 0 {
 		q.Set("token_id", fmt.Sprintf("%d", p.TokenID))
 	}
+	if p.CollectionSlug != "" {
+		q.Set("collection_slug", p.CollectionSlug)
+	}
 	if p.AccountAddress != NullAddress {
 		q.Set("account_address", p.AccountAddress.String())
 	}
@@ -185,8 +191,8 @@ func (p RetrievingEventsParams) Encode() string {
 	if p.AuctionType != AuctionTypeNone {
 		q.Set("auction_type", string(p.AuctionType))
 	}
-	q.Set("limit", fmt.Sprintf("%d", p.Limit))
-	q.Set("offset", fmt.Sprintf("%d", p.Offset))
+	//q.Set("limit", fmt.Sprintf("%d", p.Limit))
+	q.Set("cursor", p.Cursor)
 	q.Set("occurred_after", fmt.Sprintf("%d", p.OccurredAfter))
 	q.Set("occurred_before", fmt.Sprintf("%d", p.OccurredBefore))
 
@@ -205,7 +211,7 @@ func (o Opensea) RetrievingEventsWithContext(ctx context.Context, params *Retrie
 
 	events = []*Event{}
 	for true {
-		path := "/api/v1/events/?" + params.Encode()
+		path := "/api/v1/events?" + params.Encode()
 		b, err := o.GetPath(ctx, path)
 		if err != nil {
 			return nil, err
@@ -248,10 +254,10 @@ func (o Opensea) RetrievingEventsWithContext(ctx context.Context, params *Retrie
 		}
 		events = append(events, tmp[0:cnt]...)
 
-		if len(eventsResp.AssetEvents) < params.Limit {
-			break
-		}
-		params.Offset += params.Limit
+		//if len(eventsResp.AssetEvents) < params.Limit {
+		//	break
+		//}
+		params.Cursor = eventsResp.Next
 	}
 
 	return

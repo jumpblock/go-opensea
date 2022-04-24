@@ -147,6 +147,13 @@ type Account struct {
 	Config        string  `json:"config" bson:"config"`
 	DiscordID     string  `json:"discord_id" bson:"discord_id"`
 }
+type Account2 struct {
+	User          int64   `json:"user" bson:"user"`
+	ProfileImgURL string  `json:"profile_img_url" bson:"profile_img_url"`
+	Address       Address `json:"address" bson:"address"`
+	Config        string  `json:"config" bson:"config"`
+	DiscordID     string  `json:"discord_id" bson:"discord_id"`
+}
 
 type User struct {
 	Username string `json:"username" bson:"username"`

@@ -2,14 +2,17 @@ package opensea
 
 import (
 	"testing"
-	"time"
 )
 
 func TestGetOrders(t *testing.T) {
 	is := initializeTest(t)
 
-	since := time.Now().Unix() - 86400
-	ret, err := o.GetOrders(contract, since)
+	//since := time.Now().Unix() - 86400
+	params := OrderParams{
+		AssetContractAddress: "0x91673149FFae3274b32997288395D07A8213e41F",
+		TokenIds:             []string{"2012", "6574"},
+	}
+	ret, err := o.GetOrders(params, true)
 	is.Nil(err)
 
 	print(len(ret))

@@ -28,7 +28,7 @@ type errorResponse struct {
 }
 
 func (e errorResponse) Error() string {
-	return "Not success"
+	return e.Msg
 }
 
 func NewOpensea(apiKey string) (*Opensea, error) {

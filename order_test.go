@@ -1,6 +1,7 @@
 package opensea
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -9,15 +10,15 @@ func TestGetOrders(t *testing.T) {
 
 	//since := time.Now().Unix() - 86400
 	params := OrderParams{
-		AssetContractAddress: "0x91673149FFae3274b32997288395D07A8213e41F",
-		TokenIds:             []string{"2012", "6574"},
+		AssetContractAddress: "0x4af69be25f4eb13dab39af246d607d643fe71968",
+		TokenIds:             []string{"637", "901"},
+		Side:                 fmt.Sprintf("%d", Sell),
 	}
-	ret, err := o.GetOrders(params, true)
+	ret, err := o.GetOrders(params, false)
 	is.Nil(err)
 
 	print(len(ret))
-
-	print(*ret[0])
-	print(ret[0].IsPrivate())
-	print(ret[0].BasePrice.Big())
+	for _, v := range ret {
+		fmt.Println(v.Asset.TokenID, v)
+	}
 }

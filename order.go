@@ -38,7 +38,7 @@ type Order struct {
 	Calldata           string    `json:"calldata" bson:"calldata"`
 	ReplacementPattern string    `json:"replacement_pattern" bson:"replacement_pattern"`
 	StaticTarget       Address   `json:"static_target" bson:"static_target"`
-	StaticExtradata    Bytes     `json:"static_extradata" bson:"static_extradata"`
+	StaticExtradata    string    `json:"static_extradata" bson:"static_extradata"`
 	PaymentToken       Address   `json:"payment_token" bson:"payment_token"`
 	// PaymentTokenContract PaymentTokenContract `json:"payment_token_contract" bson:"payment_token_contract"`
 	BasePrice       Number `json:"base_price" bson:"base_price"`

@@ -210,7 +210,7 @@ func (o Opensea) RetrievingEventsWithContext(ctx context.Context, params *EventP
 		if err != nil {
 			return nil, err
 		}
-		fmt.Println("events:", len(eventsResp.AssetEvents), path)
+		//fmt.Println("events:", len(eventsResp.AssetEvents), path)
 
 		events = append(events, eventsResp.AssetEvents...)
 		if eventsResp.Next == "" {

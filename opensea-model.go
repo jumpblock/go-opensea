@@ -71,7 +71,7 @@ func (a *Address) UnmarshalJSON(b []byte) error {
 	if err != nil {
 		return err
 	}
-	*a, err = ParseAddress(s)
+	*a, _ = ParseAddress(s)
 	return err
 }
 

@@ -52,6 +52,7 @@ type Event struct {
 	BuyOrder            uint64              `json:"buy_order" bson:"buy_order"`
 	SellOrder           uint64              `json:"sell_order" bson:"sell_order"`
 	ListingTime         string              `json:"listing_time" bson:"listing_time"`
+	IsPrivate           bool                `json:"is_private" bson:"is_private"`
 }
 
 func (e Event) IsBundle() bool {

@@ -35,7 +35,7 @@ type Event struct {
 	AuctionType         string              `json:"auction_type" bson:"auction_type"`
 	StartingPrice       string              `json:"starting_price" bson:"starting_price"`
 	EndingPrice         string              `json:"ending_price" bson:"ending_price"`
-	Duration            interface{}         `json:"duration" bson:"duration"`
+	Duration            string              `json:"duration" bson:"duration"`
 	MinPrice            Number              `json:"min_price" bson:"min_price"`
 	OfferedTo           Number              `json:"offered_to" bson:"offered_to"`
 	BidAmount           Number              `json:"bid_amount" bson:"bid_amount"`

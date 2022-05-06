@@ -120,13 +120,14 @@ func (t *TimeNano) UnmarshalJSON(b []byte) error {
 	if err != nil {
 		return err
 	}
+	ss := strings.Split(s, "+")
 	tt := time.Time{}
-	tt, err = time.Parse("2006-01-02T15:04:05.999999", s)
-	// if strings.Contains(s, ".") {
-	//      tt, err = time.Parse("2006-01-02T15:04:05.999999", s)
-	// } else {
-	//      tt, err = time.Parse("2006-01-02T15:04:05", s)
-	// }
+	//tt, err = time.Parse("2006-01-02T15:04:05.999999", ss[0])
+	if strings.Contains(ss[0], ".") {
+		tt, err = time.Parse("2006-01-02T15:04:05.999999", ss[0])
+	} else {
+		tt, err = time.Parse("2006-01-02T15:04:05", ss[0])
+	}
 	if err != nil {
 		return err
 	}

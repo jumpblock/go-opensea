@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"time"
 )
 
 type Order struct {
@@ -117,6 +118,7 @@ type OrderParams struct {
 	Offset               string   `json:"offset"`
 	OrderBy              string   `json:"order_by"`        //created_date,eth_price
 	OrderDirection       string   `json:"order_direction"` //asc,desc
+	Delay                uint     //in ms
 }
 type orderResp struct {
 	Count  int64    `json:"count"`
@@ -144,6 +146,9 @@ func (o Opensea) GetOrders(params OrderParams, findAll bool) ([]*Order, error) {
 		orders = append(orders, ords...)
 		if len(ords) < limit {
 			break
+		}
+		if params.Delay > 0 {
+			time.Sleep(time.Duration(params.Delay) * time.Millisecond)
 		}
 		offset += limit
 	}

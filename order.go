@@ -124,10 +124,44 @@ type orderResp struct {
 	Count  int64    `json:"count"`
 	Orders []*Order `json:"orders"`
 }
+type listingsResp struct {
+	Listings []*Order `json:"listings"`
+}
 
 func (o Opensea) GetOrders2(assetContractAddress string, listedAfter int64) ([]*Order, error) {
 	ctx := context.TODO()
 	return o.GetOrdersWithContext(ctx, assetContractAddress, listedAfter)
+}
+func (o Opensea) GetActiveListings(assetAddress string, tokenIds []string, interval time.Duration) ([]*Order, error) {
+	var list []*Order
+	for _, tokenId := range tokenIds {
+		res, err := o.getActiveListings(assetAddress, tokenId)
+		if err != nil {
+			return nil, err
+		}
+		list = append(list, res...)
+		if interval > 0 {
+			time.Sleep(interval)
+		}
+	}
+	return list, nil
+}
+func (o Opensea) getActiveListings(assetAddress string, tokenId string) ([]*Order, error) {
+	path := fmt.Sprintf("/api/v1/asset/%s/%s/listings?limit=%d", assetAddress, tokenId, 50)
+	b, err := o.GetPath(context.Background(), path)
+	if err != nil {
+		return nil, err
+	}
+	var res listingsResp
+	err = json.Unmarshal(b, &res)
+	if err != nil {
+		return nil, err
+	}
+	for _, v := range res.Listings {
+		//reset some info
+		v.Asset = Asset{TokenID: v.Metadata.Asset.ID, AssetContract: &AssetContract{Address: Address(v.Metadata.Asset.Address)}}
+	}
+	return res.Listings, nil
 }
 func (o Opensea) GetOrders(params OrderParams, findAll bool) ([]*Order, error) {
 	if !findAll {

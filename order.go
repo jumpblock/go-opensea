@@ -157,10 +157,10 @@ func (o Opensea) getActiveListings(assetAddress string, tokenId string) ([]*Orde
 	if err != nil {
 		return nil, err
 	}
-	for _, v := range res.Listings {
-		//reset some info
-		v.Asset = Asset{TokenID: v.Metadata.Asset.ID, AssetContract: &AssetContract{Address: Address(v.Metadata.Asset.Address)}}
-	}
+	//for _, v := range res.Listings {
+	//	//reset some info
+	//	v.Asset = Asset{TokenID: v.Metadata.Asset.ID, AssetContract: &AssetContract{Address: Address(v.Metadata.Asset.Address)}}
+	//}
 	return res.Listings, nil
 }
 func (o Opensea) GetOrders(params OrderParams, findAll bool) ([]*Order, error) {

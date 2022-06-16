@@ -63,6 +63,35 @@ func (o Order) IsPrivate() bool {
 	return false
 }
 
+type OrderV2 struct {
+	OrderHash        string        `json:"order_hash" bson:"order_hash"`
+	CreatedDate      *TimeNano     `json:"created_date" bson:"created_date"`
+	ClosingDate      *TimeNano     `json:"closing_date" bson:"closing_date"`
+	ExpirationTime   int64         `json:"expiration_time" bson:"expiration_time"`
+	ListingTime      int64         `json:"listing_time" bson:"listing_time"`
+	Maker            *Account2     `json:"maker" bson:"maker"`
+	Taker            *Account2     `json:"taker" bson:"taker"`
+	CurrentPrice     Number        `json:"current_price" bson:"current_price"`
+	MakerFees        []AccountFee  `json:"maker_fees" bson:"maker_fees"`
+	TakerFees        []AccountFee  `json:"taker_fees" bson:"taker_fees"`
+	Side             string        `json:"side" bson:"side"`
+	OrderType        string        `json:"order_type" bson:"order_type"`
+	Cancelled        bool          `json:"cancelled" bson:"cancelled"`
+	Finalized        bool          `json:"finalized" bson:"finalized"`
+	MarkedInvalid    bool          `json:"marked_invalid" bson:"marked_invalid"`
+	RelayId          string        `json:"relay_id" bson:"relay_id"`
+	ClientSignature  string        `json:"client_signature" bson:"client_signature"`
+	ProtocolAddress  string        `json:"protocol_address" bson:"protocol_address"`
+	ProtocolData     *ProtocolData `json:"protocol_data"`
+	MakerAssetBundle *AssetBundle  `json:"maker_asset_bundle"`
+	TakerAssetBundle *AssetBundle  `json:"taker_asset_bundle"`
+}
+
+func (p OrderV2) String() string {
+	by, _ := json.Marshal(p)
+	return string(by)
+}
+
 type Side uint8
 
 const (
@@ -120,17 +149,41 @@ type OrderParams struct {
 	OrderDirection       string   `json:"order_direction"` //asc,desc
 	Delay                uint     //in ms
 }
+
 type orderResp struct {
 	Count  int64    `json:"count"`
 	Orders []*Order `json:"orders"`
 }
 type listingsResp struct {
-	Listings []*Order `json:"listings"`
+	Listings        []*Order   `json:"listings"`
+	SeaportListings []*OrderV2 `json:"seaport_listings"`
+}
+type listingsRespV2 struct {
+	Next     string     `json:"next"`
+	Previous string     `json:"previous"`
+	Orders   []*OrderV2 `json:"orders"`
 }
 
 func (o Opensea) GetOrders2(assetContractAddress string, listedAfter int64) ([]*Order, error) {
 	ctx := context.TODO()
 	return o.GetOrdersWithContext(ctx, assetContractAddress, listedAfter)
+}
+func (o Opensea) GetActiveListingsV2(assetAddress string, tokenIds []string) ([]*OrderV2, error) {
+	path := fmt.Sprintf("/v2/orders/ethereum/seaport/listings?limit=50&asset_contract_address=%s", assetAddress)
+	for _, v := range tokenIds {
+		path += "&token_ids=" + v
+	}
+	ctx := context.TODO()
+	by, err := o.GetPath(ctx, path)
+	if err != nil {
+		return nil, err
+	}
+	var res listingsRespV2
+	err = json.Unmarshal(by, &res)
+	if err != nil {
+		return nil, err
+	}
+	return res.Orders, nil
 }
 func (o Opensea) GetActiveListings(assetAddress string, tokenIds []string, interval time.Duration) ([]*Order, error) {
 	var list []*Order

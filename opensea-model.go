@@ -155,6 +155,10 @@ type Account2 struct {
 	Config        string  `json:"config" bson:"config"`
 	DiscordID     string  `json:"discord_id" bson:"discord_id"`
 }
+type AccountFee struct {
+	Account    Account2 `json:"account" bson:"account"`
+	BasePoints Number   `json:"basis_points" bson:"basis_points"`
+}
 
 type User struct {
 	Username string `json:"username" bson:"username"`
@@ -217,6 +221,18 @@ type Asset struct {
 	Decimals             int64          `json:"decimals" bson:"decimals"`
 	TokenMetadata        string         `json:"token_metadata" bson:"token_metadata"`
 	Traits               interface{}    `json:"traits" bson:"traits"`
+}
+type AssetBundle struct {
+	Maker         *Account       `json:"maker" bson:"maker"`
+	Slug          string         `json:"slug" bson:"slug"`
+	Assets        []*Asset       `json:"assets" bson:"assets"`
+	Name          string         `json:"name" bson:"name"`
+	Description   string         `json:"description" bson:"description"`
+	ExternalLink  string         `json:"external_link" bson:"external_link"`
+	Collection    *Collection    `json:"collection" bson:"collection"`
+	AssetContract *AssetContract `json:"asset_contract" bson:"asset_contract"`
+	Permalink     string         `json:"permalink" bson:"permalink"`
+	SellOrders    interface{}    `json:"sell_orders" bson:"sell_orders"`
 }
 
 type AssetContract struct {
@@ -322,3 +338,52 @@ type assetsResp struct {
 	Previous string  `json:"previous" bson:"previous"`
 	Assets   []Asset `json:"assets" bson:"assets"`
 }
+
+type ProtocolData struct {
+	Parameters *OrderComponent `json:"parameters"`
+	Signature  string          `json:"signature"`
+}
+type OrderComponent struct {
+	Offerer                         string          `json:"offerer"`
+	Zone                            string          `json:"zone"`
+	ZoneHash                        string          `json:"zoneHash"`
+	StartTime                       Number          `json:"startTime"`
+	EndTime                         Number          `json:"endTime"`
+	OrderType                       OrderType       `json:"orderType"`
+	Salt                            Number          `json:"salt" bson:"salt"`
+	ConduitKey                      string          `json:"conduitKey"`
+	TotalOriginalConsiderationItems int             `json:"totalOriginalConsiderationItems"`
+	Counter                         int             `json:"counter"`
+	Nonce                           string          `json:"nonce"`
+	Offer                           []OfferItem     `json:"offer"`
+	Consideration                   []Consideration `json:"consideration"`
+}
+type OfferItem struct {
+	ItemType             ItemType `joon:"itemType"`
+	Token                string   `json:"token"`
+	IdentifierOrCriteria string   `json:"identifierOrCriteria"`
+	StartAmount          Number   `json:"startAmount"`
+	EndAmount            Number   `json:"endAmount"`
+}
+type Consideration struct {
+	OfferItem
+	Recipient string `json:"recipient"`
+}
+
+type OrderType int
+type ItemType int
+
+const (
+	OrderOld               = -1
+	OrderFullOpen          = 0
+	OrderPartialOpen       = 1
+	OrderFullRestricted    = 2
+	OrderPartialRestricted = 3
+
+	ItemNative              = 0
+	ItemERC20               = 1
+	ItemERC721              = 2
+	ItemERC1155             = 3
+	ItemERC721WithCriteria  = 4
+	ItemERC1155WithCriteria = 5
+)

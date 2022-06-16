@@ -82,18 +82,6 @@ type Transaction struct {
 	Timestamp        string   `json:"timestamp" bson:"timestamp"`
 }
 
-type AssetBundle struct {
-	Maker         *Account       `json:"maker" bson:"maker"`
-	Slug          string         `json:"slug" bson:"slug"`
-	Assets        []*Asset       `json:"assets" bson:"assets"`
-	Name          string         `json:"name" bson:"name"`
-	Description   string         `json:"description" bson:"description"`
-	ExternalLink  string         `json:"external_link" bson:"external_link"`
-	AssetContract *AssetContract `json:"asset_contract" bson:"asset_contract"`
-	Permalink     string         `json:"permalink" bson:"permalink"`
-	SellOrders    interface{}    `json:"sell_orders" bson:"sell_orders"`
-}
-
 // DevFeePaymentEvent is fee transfer event from OpenSea to Dev, It appears to be running in bulk on a regular basis.
 type DevFeePaymentEvent struct {
 	EventType      string       `json:"event_type" bson:"event_type"`

@@ -258,6 +258,7 @@ type AssetContract struct {
 	BuyerFeeBasisPoints         int64       `json:"buyer_fee_basis_points" bson:"buyer_fee_basis_points"`
 	SellerFeeBasisPoints        int64       `json:"seller_fee_basis_points" bson:"seller_fee_basis_points"`
 	PayoutAddress               Address     `json:"payout_address" bson:"payout_address"`
+	Collection                  *Collection `json:"collection" bson:"collection"`
 }
 
 type Collection struct {

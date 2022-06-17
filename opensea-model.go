@@ -371,8 +371,9 @@ type Consideration struct {
 	Recipient string `json:"recipient"`
 }
 
-type OrderType int
-type ItemType int
+type OrderType uint8
+type ItemType uint8
+type BasicOrderType uint8
 
 const (
 	OrderOld               = -1
@@ -387,4 +388,29 @@ const (
 	ItemERC1155             = 3
 	ItemERC721WithCriteria  = 4
 	ItemERC1155WithCriteria = 5
+
+	BasicOrderEthToErc721FullOpen             = 0
+	BasicOrderEthToErc721PartialOpen          = 1
+	BasicOrderEthToErc721FullRestricted       = 2
+	BasicOrderEthToErc721PartialRestricted    = 3
+	BasicOrderEthToErc1155FullOpen            = 4
+	BasicOrderEthToErc1155PartialOpen         = 5
+	BasicOrderEthToErc1155FullRestricted      = 6
+	BasicOrderEthToErc1155PartialRestricted   = 7
+	BasicOrderErc20ToErc721FullOpen           = 8
+	BasicOrderErc20ToErc721PartialOpen        = 9
+	BasicOrderErc20ToErc721FullRestricted     = 10
+	BasicOrderErc20ToErc721PartialRestricted  = 11
+	BasicOrderErc20ToErc1155FullOpen          = 12
+	BasicOrderErc20ToErc1155PartialOpen       = 13
+	BasicOrderErc20ToErc1155FullRestricted    = 14
+	BasicOrderErc20ToErc1155PartialRestricted = 15
+	BasicOrderErc721ToErc20FullOpen           = 16
+	BasicOrderErc721ToErc20PartialOpen        = 17
+	BasicOrderErc721ToErc20FullRestricted     = 18
+	BasicOrderErc721ToErc20PartialRestricted  = 19
+	BasicOrderErc1155ToErc20FullOpen          = 20
+	BasicOrderErc1155ToErc20PartialOpen       = 21
+	BasicOrderErc1155ToErc20FullRestricted    = 22
+	BasicOrderErc1155ToErc20PartialRestricted = 23
 )

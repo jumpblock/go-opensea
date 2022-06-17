@@ -371,7 +371,7 @@ type Consideration struct {
 	Recipient string `json:"recipient"`
 }
 
-type OrderType uint8
+type OrderType int8
 type ItemType uint8
 type BasicOrderType uint8
 

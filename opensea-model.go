@@ -372,8 +372,8 @@ type Consideration struct {
 }
 
 type OrderType int8
-type ItemType uint8
-type BasicOrderType uint8
+type ItemType int8
+type BasicOrderType int8
 
 const (
 	OrderOld               = -1

@@ -33,6 +33,17 @@ func TestGetAssets(t *testing.T) {
 
 	print(ret.Collection.Slug)
 }
+func TestGetCollections(t *testing.T) {
+	is := initializeTest(t)
+	res, err := o.GetCollections(0, 300)
+	is.Nil(err)
+	by, _ := json.Marshal(res)
+	fmt.Println(len(res), string(by))
+
+	cs, err := o.GetSingleCollection(res[0].Slug)
+	is.Nil(err)
+	fmt.Println(cs)
+}
 
 func initializeTest(t *testing.T) is.I {
 	is := is.New(t)

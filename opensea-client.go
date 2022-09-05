@@ -66,6 +66,35 @@ func NewOpenseaRinkeby(apiKey string) (*Opensea, error) {
 //	return ret, json.Unmarshal(b, ret)
 //}
 
+func (o Opensea) GetCollections(offset, limit int) ([]CollectionSingle, error) {
+	ctx := context.TODO()
+	path := fmt.Sprintf("/api/v1/collections?offset=%d&limit=%d", offset, limit)
+	b, err := o.GetPath(ctx, path)
+	if err != nil {
+		return nil, err
+	}
+	resp := new(collectionsResp)
+	err = json.Unmarshal(b, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Collections, nil
+}
+func (o Opensea) GetSingleCollection(slug string) (CollectionSingle, error) {
+	ctx := context.TODO()
+	path := fmt.Sprintf("/api/v1/collection/%s", slug)
+	b, err := o.GetPath(ctx, path)
+	if err != nil {
+		return CollectionSingle{}, err
+	}
+	resp := new(CollectionSingleResponse)
+	err = json.Unmarshal(b, &resp)
+	if err != nil {
+		return CollectionSingle{}, err
+	}
+	return resp.Collection, nil
+}
+
 func (o Opensea) GetSingleAsset(assetContractAddress string, tokenID *big.Int) (*Asset, error) {
 	ctx := context.TODO()
 	return o.GetSingleAssetWithContext(ctx, assetContractAddress, tokenID)

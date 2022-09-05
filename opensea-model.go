@@ -325,6 +325,9 @@ type Stat struct {
 type CollectionSingleResponse struct {
 	Collection CollectionSingle `json:"collection" bson:"collection"`
 }
+type collectionsResp struct {
+	Collections []CollectionSingle `json:"collections" bson:"collections"`
+}
 
 type CollectionSingle struct {
 	Editors               []Address      `json:"editors" bson:"editors"`

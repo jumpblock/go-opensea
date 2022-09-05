@@ -35,7 +35,7 @@ func TestGetAssets(t *testing.T) {
 }
 func TestGetCollections(t *testing.T) {
 	is := initializeTest(t)
-	res, err := o.GetCollections(0, 300)
+	res, err := o.GetCollections(10000, 300)
 	is.Nil(err)
 	by, _ := json.Marshal(res)
 	fmt.Println(len(res), string(by))

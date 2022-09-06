@@ -267,8 +267,8 @@ type Collection struct {
 	CreatedDate                 string      `json:"created_date" bson:"created_date"`
 	DefaultToFiat               bool        `json:"default_to_fiat" bson:"default_to_fiat"`
 	Description                 string      `json:"description" bson:"description"`
-	DevBuyerFeeBasisPoints      int         `json:"dev_buyer_fee_basis_points" bson:"dev_buyer_fee_basis_points"`
-	DevSellerFeeBasisPoints     int         `json:"dev_seller_fee_basis_points" bson:"dev_seller_fee_basis_points"`
+	DevBuyerFeeBasisPoints      interface{} `json:"dev_buyer_fee_basis_points" bson:"dev_buyer_fee_basis_points"`
+	DevSellerFeeBasisPoints     interface{} `json:"dev_seller_fee_basis_points" bson:"dev_seller_fee_basis_points"`
 	DiscordUrl                  string      `json:"discord_url" bson:"discord_url"`
 	DisplayData                 interface{} `json:"display_data" bson:"display_data"`
 	ExternalUrl                 string      `json:"external_url" bson:"external_url"`
@@ -282,8 +282,8 @@ type Collection struct {
 	MediumUsername              string      `json:"medium_username" bson:"medium_username"`
 	Name                        string      `json:"name" bson:"name"`
 	OnlyProxiedTransfers        bool        `json:"only_proxied_transfers" bson:"only_proxied_transfers"`
-	OpenseaBuyerFeeBasisPoints  int         `json:"opensea_buyer_fee_basis_points" bson:"opensea_buyer_fee_basis_points"`
-	OpenseaSellerFeeBasisPoints int         `json:"opensea_seller_fee_basis_points" bson:"opensea_seller_fee_basis_points"`
+	OpenseaBuyerFeeBasisPoints  interface{} `json:"opensea_buyer_fee_basis_points" bson:"opensea_buyer_fee_basis_points"`
+	OpenseaSellerFeeBasisPoints interface{} `json:"opensea_seller_fee_basis_points" bson:"opensea_seller_fee_basis_points"`
 	PayoutAddress               string      `json:"payout_address" bson:"payout_address"`
 	RequireEmail                bool        `json:"require_email" bson:"require_email"`
 	ShortDescription            string      `json:"short_description" bson:"short_description"`

@@ -14,7 +14,7 @@ type Number string
 
 func (n Number) Big() *big.Int {
 	s := strings.Split(string(n), ".")
-	r, _ := new(big.Int).SetString(s[0], 10)
+	r, _ := new(big.Int).SetString(s[0], 0)
 	return r
 }
 

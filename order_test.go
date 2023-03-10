@@ -35,7 +35,15 @@ func TestGetActiveListings(t *testing.T) {
 }
 func TestGetActiveListingsV2(t *testing.T) {
 	is := initializeTest(t)
-	ret, err := o.GetActiveListingsV2("0x495f947276749Ce646f68AC8c248420045cb7b5e", []string{"17334238549178928922683112013548718585454764741088521480796844698787716792321"})
+	ret, err := o.GetActiveListingsV2("0xed5af388653567af2f388e6224dc7c4b3241c544", []string{"6411"})
+	is.Nil(err)
+	fmt.Println(ret)
+}
+func TestGetFulfillment(t *testing.T) {
+	is := initializeTest(t)
+	ret, err := o.GetListingFulfillment(
+		ListingParam{Hash: "0x19f3d5f6534b1fe545af3db3e9ce4312cea7b90a141dd4a22d4b11e560ef278b", Chain: "ethereum", ProtocolAddress: "0x00000000000001ad428e4906ae43d8f9852d0dd6"},
+		FulfillerParam{Address: "0xD77F375A33b1109e82f3C46A30537F1E019708eB"})
 	is.Nil(err)
 	fmt.Println(ret)
 }

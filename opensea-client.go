@@ -1,6 +1,7 @@
 package opensea
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -130,6 +131,42 @@ func (o Opensea) GetAssetDetail(assetContractAddress string) (*Asset, error) {
 
 func (o Opensea) GetPath(ctx context.Context, path string) ([]byte, error) {
 	return o.getURL(ctx, o.API+path)
+}
+func (o Opensea) PostPath(ctx context.Context, path string, data []byte) ([]byte, error) {
+	client := o.httpClient
+	req, err := http.NewRequestWithContext(ctx, "POST", o.API+path, bytes.NewBuffer(data))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("X-API-KEY", o.APIKey)
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Content-Type", "application/json")
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		e := new(errorResponse)
+		err = json.Unmarshal(body, e)
+		if err != nil {
+			return nil, fmt.Errorf("Backend returns status %d msg: %s", resp.StatusCode, string(body))
+		}
+		if !e.Success {
+			e.Msg = resp.Status
+			return nil, e
+		}
+
+		return nil, fmt.Errorf("Backend returns status %d msg: %s", resp.StatusCode, string(body))
+	}
+
+	return body, nil
 }
 
 func (o Opensea) getURL(ctx context.Context, url string) ([]byte, error) {

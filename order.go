@@ -168,6 +168,50 @@ func (o Opensea) GetOrders2(assetContractAddress string, listedAfter int64) ([]*
 	ctx := context.TODO()
 	return o.GetOrdersWithContext(ctx, assetContractAddress, listedAfter)
 }
+
+type ListingParam struct {
+	Hash            string `json:"hash"`
+	Chain           string `json:"chain"` //ethereum
+	ProtocolAddress string `json:"protocol_address"`
+}
+type FulfillerParam struct {
+	Address string `json:"address"`
+}
+
+type ListingFulfillment struct {
+	Protocol        string `json:"protocol"`
+	FulfillmentData struct {
+		Orders []ProtocolData `json:"orders"`
+	} `json:"fulfillment_data"`
+}
+
+func (p ListingFulfillment) String() string {
+	by, _ := json.Marshal(p)
+	return string(by)
+}
+
+func (o Opensea) GetListingFulfillment(listing ListingParam, fulfiller FulfillerParam) (*ListingFulfillment, error) {
+	path := "/v2/listings/fulfillment_data"
+	ctx := context.TODO()
+	mm := map[string]interface{}{
+		"listing":   listing,
+		"fulfiller": fulfiller,
+	}
+	content, err := json.Marshal(mm)
+	if err != nil {
+		return nil, err
+	}
+	by, err := o.PostPath(ctx, path, content)
+	if err != nil {
+		return nil, err
+	}
+	var res *ListingFulfillment
+	err = json.Unmarshal(by, &res)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
 func (o Opensea) GetActiveListingsV2(assetAddress string, tokenIds []string) ([]*OrderV2, error) {
 	path := fmt.Sprintf("/v2/orders/ethereum/seaport/listings?limit=50&asset_contract_address=%s", assetAddress)
 	for _, v := range tokenIds {

@@ -357,7 +357,7 @@ type OrderComponent struct {
 	Salt                            Number          `json:"salt" bson:"salt"`
 	ConduitKey                      string          `json:"conduitKey"`
 	TotalOriginalConsiderationItems int             `json:"totalOriginalConsiderationItems"`
-	Counter                         int             `json:"counter"`
+	Counter                         interface{}     `json:"counter"`
 	Nonce                           string          `json:"nonce"`
 	Offer                           []OfferItem     `json:"offer"`
 	Consideration                   []Consideration `json:"consideration"`

@@ -53,6 +53,14 @@ func initializeTest(t *testing.T) is.I {
 	is.Nil(err)
 	return is
 }
+func initializeTestProxy(t *testing.T, proxy string) is.I {
+	is := is.New(t)
+	var err error
+
+	o, err = NewOpenseaWithProxy(os.Getenv("API_KEY"), proxy)
+	is.Nil(err)
+	return is
+}
 
 func print(in interface{}) {
 	if reflect.TypeOf(in).Kind() == reflect.Struct {

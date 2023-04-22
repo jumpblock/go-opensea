@@ -21,6 +21,7 @@ type Opensea struct {
 	API        string
 	APIKey     string
 	httpClient *http.Client
+	proxy      string
 }
 
 type errorResponse struct {
@@ -37,6 +38,15 @@ func NewOpensea(apiKey string) (*Opensea, error) {
 		API:        mainnetAPI,
 		APIKey:     apiKey,
 		httpClient: defaultHttpClient(),
+	}
+	return o, nil
+}
+func NewOpenseaWithProxy(apiKey, proxy string) (*Opensea, error) {
+	o := &Opensea{
+		API:        mainnetAPI,
+		APIKey:     apiKey,
+		httpClient: defaultHttpClient(),
+		proxy:      proxy,
 	}
 	return o, nil
 }
@@ -134,13 +144,20 @@ func (o Opensea) GetPath(ctx context.Context, path string) ([]byte, error) {
 }
 func (o Opensea) PostPath(ctx context.Context, path string, data []byte) ([]byte, error) {
 	client := o.httpClient
-	req, err := http.NewRequestWithContext(ctx, "POST", o.API+path, bytes.NewBuffer(data))
+	target := o.API + path
+	if o.proxy != "" {
+		target = o.proxy
+	}
+	req, err := http.NewRequestWithContext(ctx, "POST", target, bytes.NewBuffer(data))
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Add("X-API-KEY", o.APIKey)
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/json")
+	if o.proxy != "" {
+		req.Header.Add("__ddd__", o.API+path)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -171,9 +188,16 @@ func (o Opensea) PostPath(ctx context.Context, path string, data []byte) ([]byte
 
 func (o Opensea) getURL(ctx context.Context, url string) ([]byte, error) {
 	client := o.httpClient
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	target := url
+	if o.proxy != "" {
+		target = o.proxy
+	}
+	req, err := http.NewRequestWithContext(ctx, "GET", target, nil)
 	req.Header.Add("X-API-KEY", o.APIKey)
 	req.Header.Add("Accept", "application/json")
+	if o.proxy != "" {
+		req.Header.Add("__ddd__", url)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err

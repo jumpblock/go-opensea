@@ -34,16 +34,16 @@ func TestGetActiveListings(t *testing.T) {
 	}
 }
 func TestGetActiveListingsV2(t *testing.T) {
-	is := initializeTest(t)
-	ret, err := o.GetActiveListingsV2("0xed5af388653567af2f388e6224dc7c4b3241c544", []string{"6411"})
+	is := initializeTestProxy(t, "http://localhost:8087")
+	ret, err := o.GetActiveListingsV2("0xbe9371326f91345777b04394448c23e2bfeaa826", []string{"21330"})
 	is.Nil(err)
 	fmt.Println(ret)
 }
 func TestGetFulfillment(t *testing.T) {
-	is := initializeTest(t)
+	is := initializeTestProxy(t, "http://localhost:8087")
 	ret, err := o.GetListingFulfillment(
-		ListingParam{Hash: "0x19f3d5f6534b1fe545af3db3e9ce4312cea7b90a141dd4a22d4b11e560ef278b", Chain: "ethereum", ProtocolAddress: "0x00000000000001ad428e4906ae43d8f9852d0dd6"},
-		FulfillerParam{Address: "0xD77F375A33b1109e82f3C46A30537F1E019708eB"})
+		ListingParam{Hash: "0x587fbe9cf2d636b8baaa44bed0159a78139ad6ccc6d394317201c2ae5edc6f68", Chain: "ethereum", ProtocolAddress: "0x00000000000001ad428e4906ae43d8f9852d0dd6"},
+		FulfillerParam{Address: "0xbe9371326f91345777b04394448c23e2bfeaa826"})
 	is.Nil(err)
 	fmt.Println(ret)
 }
